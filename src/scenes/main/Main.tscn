@@ -1,0 +1,85 @@
+[gd_scene load_steps=15 format=3]
+
+[ext_resource type="PackedScene" path="res://src/scenes/player/Player.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://src/scenes/ui/GameUI.tscn" id="2"]
+[ext_resource type="Script" path="res://src/scripts/game/GameManager.gd" id="3"]
+[ext_resource type="Script" path="res://src/scripts/background/ScrollingBackground.gd" id="4"]
+[ext_resource type="Script" path="res://src/scripts/background/Ground.gd" id="5"]
+[ext_resource type="Script" path="res://src/scripts/game/ObstacleSpawner.gd" id="6"]
+[ext_resource type="Script" path="res://src/scripts/game/ScoreManager.gd" id="7"]
+[ext_resource type="Script" path="res://src/scripts/game/GameState.gd" id="8"]
+[ext_resource type="Script" path="res://src/scripts/debug/DebugManager.gd" id="9"]
+[ext_resource type="Script" path="res://src/scripts/core/GameSignals.gd" id="10"]
+[ext_resource type="Script" path="res://src/scripts/core/GameConfig.gd" id="11"]
+[ext_resource type="Script" path="res://src/scripts/debug/BoundaryVisualizer.gd" id="12"]
+[ext_resource type="Script" path="res://src/scripts/core/EventBus.gd" id="13"]
+[ext_resource type="Script" path="res://src/scripts/input/InputManager.gd" id="14"]
+
+[sub_resource type="RectangleShape2D" id="1"]
+size = Vector2(2000, 200)
+
+[node name="Main" type="Node2D"]
+
+[node name="ScrollingBackground" type="Node2D" parent="."]
+script = ExtResource("4")
+
+[node name="Ground" type="StaticBody2D" parent="."]
+script = ExtResource("5")
+
+[node name="GroundCollision" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("1")
+
+[node name="GroundSprite" type="ColorRect" parent="Ground"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 400.0
+color = Color(0.2, 0.5, 0.2, 1)
+
+[node name="Player" parent="." instance=ExtResource("1")]
+position = Vector2(100, 300)
+
+[node name="ObstacleContainer" type="Node2D" parent="."]
+groups = ["obstacle_container"]
+
+[node name="EventBus" type="Node" parent="."]
+script = ExtResource("13")
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("3")
+
+[node name="ObstacleSpawner" type="Node" parent="GameManager"]
+script = ExtResource("6")
+spawn_timer_min = 1.0
+spawn_timer_max = 3.0
+obstacle_speed = 200.0
+spawn_height_range = Vector2(100, 400)
+
+[node name="ScoreManager" type="Node" parent="GameManager"]
+script = ExtResource("7")
+score_per_second = 10
+obstacle_bonus = 50
+survival_bonus = 100
+
+[node name="GameState" type="Node" parent="GameManager"]
+script = ExtResource("8")
+
+[node name="GameUI" parent="." instance=ExtResource("2")]
+
+[node name="GameSignals" type="Node" parent="."]
+script = ExtResource("10")
+
+[node name="DebugManager" type="Node" parent="."]
+script = ExtResource("9")
+debug_enabled = false
+log_level = 2
+
+[node name="BoundaryVisualizer" type="Node2D" parent="."]
+script = ExtResource("12")
+show_boundaries = false
+boundary_color = Color(1, 0, 0, 0.5)
+boundary_thickness = 3.0
+
+[node name="InputManager" type="Node" parent="."]
+script = ExtResource("14")
+debug_enabled = false
