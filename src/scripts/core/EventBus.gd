@@ -52,6 +52,18 @@ static func emit_game_started() -> void:
 	if instance:
 		instance.game_started.emit()
 
+static func emit_game_paused() -> void:
+	if instance:
+		instance.game_paused.emit()
+
+static func emit_game_resumed() -> void:
+	if instance:
+		instance.game_resumed.emit()
+
+static func emit_game_restarted() -> void:
+	if instance:
+		instance.game_restarted.emit()
+
 static func emit_game_over(final_score: int) -> void:
 	if instance:
 		instance.game_over.emit(final_score)
@@ -87,10 +99,6 @@ static func emit_boundary_visualization_toggled(enabled: bool) -> void:
 static func emit_debug_toggled(enabled: bool) -> void:
 	if instance:
 		instance.debug_toggled.emit(enabled)
-
-static func emit_game_restarted() -> void:
-	if instance:
-		instance.game_restarted.emit()
 
 static func emit_obstacle_destroyed(obstacle: Area2D) -> void:
 	if instance:

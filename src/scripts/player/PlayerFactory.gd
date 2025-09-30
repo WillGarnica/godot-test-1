@@ -1,71 +1,28 @@
 class_name PlayerFactory
 extends RefCounted
 ## Factory class for creating different types of players
-## Handles instantiation and configuration of player strategies
-
-# Import player strategies
-const RunnerStrategy = preload("res://src/scripts/player/strategies/RunnerStrategy.gd")
-const FlyerStrategy = preload("res://src/scripts/player/strategies/FlyerStrategy.gd")
-const TankStrategy = preload("res://src/scripts/player/strategies/TankStrategy.gd")
-const NinjaStrategy = preload("res://src/scripts/player/strategies/NinjaStrategy.gd")
-const MageStrategy = preload("res://src/scripts/player/strategies/MageStrategy.gd")
-const SpeedsterStrategy = preload("res://src/scripts/player/strategies/SpeedsterStrategy.gd")
+## Now uses Builder Pattern for more flexible player creation
 
 static func create_player(type: PlayerType.Type, position: Vector2, parent: Node) -> CharacterBody2D:
-	# Load the player scene
-	var player_scene = preload("res://src/scenes/player/Player.tscn")
-	var player = player_scene.instantiate() as CharacterBody2D
-	
-	# Set the player type and position
-	player.player_type = type
-	player.position = position
-	
-	# Add to parent
-	parent.add_child(player)
-	
-	# Initialize the player with its strategy
-	_initialize_player_strategy(player, type)
-	
-	return player
+	# Use Builder Pattern for cleaner player creation
+	return PlayerBuilder.new() \
+		.set_type(type) \
+		.set_position(position) \
+		.set_parent(parent) \
+		.build()
 
 static func create_random_player(position: Vector2, parent: Node) -> CharacterBody2D:
-	# Get all available player types
-	var types = PlayerType.Type.values()
-	var random_type = types[randi() % types.size()]
-	
-	return create_player(random_type, position, parent)
+	# Use Builder Pattern for random player creation
+	return PlayerBuilder.new() \
+		.create_random() \
+		.set_position(position) \
+		.set_parent(parent) \
+		.build()
 
 static func create_player_by_name(name: String, position: Vector2, parent: Node) -> CharacterBody2D:
 	# Create player by name
 	var type = PlayerType.get_type_by_name(name)
 	return create_player(type, position, parent)
-
-static func _initialize_player_strategy(player: CharacterBody2D, type: PlayerType.Type) -> void:
-	# Get configuration for this player type
-	var config = PlayerType.get_config(type)
-	
-	# Create appropriate strategy based on type
-	var strategy: PlayerStrategy
-	match type:
-		PlayerType.Type.RUNNER:
-			strategy = RunnerStrategy.new(config, player)
-		PlayerType.Type.FLYER:
-			strategy = FlyerStrategy.new(config, player)
-		PlayerType.Type.TANK:
-			strategy = TankStrategy.new(config, player)
-		PlayerType.Type.NINJA:
-			strategy = NinjaStrategy.new(config, player)
-		PlayerType.Type.MAGE:
-			strategy = MageStrategy.new(config, player)
-		PlayerType.Type.SPEEDSTER:
-			strategy = SpeedsterStrategy.new(config, player)
-		_:
-			strategy = RunnerStrategy.new(config, player)
-	
-	# Set the strategy on the player
-	player.set_strategy(strategy)
-	
-	print("DEBUG: Player created with type: %s" % PlayerType.Type.keys()[type])
 
 # Predefined player combinations for different game modes
 static func get_balanced_team() -> Array[PlayerType.Type]:
@@ -116,7 +73,12 @@ static func create_team(team_type: String, start_position: Vector2, parent: Node
 	
 	for i in range(team_types.size()):
 		var pos = start_position + Vector2(i * spacing, 0)
-		var player = create_player(team_types[i], pos, parent)
+		# Use Builder Pattern for team creation
+		var player = PlayerBuilder.new() \
+			.set_type(team_types[i]) \
+			.set_position(pos) \
+			.set_parent(parent) \
+			.build()
 		players.append(player)
 	
 	return players
