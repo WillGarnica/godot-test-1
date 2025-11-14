@@ -4,3 +4,7 @@
 *.uid
 *.gd.uid
 *.import
+
+# Export files
+*.apk
+*.idsig
