@@ -1,0 +1,60 @@
+# Spanish Translation File
+# Language: es
+
+msgid ""
+msgstr ""
+"Language: es\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+# Main Menu
+msgid "AWESOME GAME"
+msgstr "JUEGO INCREÍBLE"
+
+msgid "PLAY"
+msgstr "JUGAR"
+
+msgid "OPTIONS"
+msgstr "OPCIONES"
+
+msgid "CREDITS"
+msgstr "CRÉDITOS"
+
+msgid "PLACE COPYRIGHT TEXT HERE"
+msgstr "COLOCAR TEXTO DE COPYRIGHT AQUÍ"
+
+# Game UI
+msgid "Score: %d"
+msgstr "Puntuación: %d"
+
+msgid "Final Score: %d"
+msgstr "Puntuación Final: %d"
+
+msgid "Restart"
+msgstr "Reiniciar"
+
+# Pause Menu
+msgid "PAUSED"
+msgstr "PAUSADO"
+
+msgid "RESUME"
+msgstr "CONTINUAR"
+
+msgid "RESTART"
+msgstr "REINICIAR"
+
+msgid "MAIN MENU"
+msgstr "MENÚ PRINCIPAL"
+
+# Options Menu
+msgid "Language:"
+msgstr "Idioma:"
+
+msgid "English"
+msgstr "Inglés"
+
+msgid "Español"
+msgstr "Español"
+
+msgid "BACK"
+msgstr "VOLVER"
+

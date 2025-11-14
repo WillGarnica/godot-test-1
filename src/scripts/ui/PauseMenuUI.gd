@@ -2,6 +2,7 @@ extends Control
 ## Pause Menu UI Controller
 ## Handles pause menu interactions
 
+@onready var title_label: Label = $MenuContainer/TitleLabel
 @onready var resume_button: Button = $MenuContainer/ResumeButton
 @onready var restart_button: Button = $MenuContainer/RestartButton
 @onready var main_menu_button: Button = $MenuContainer/MainMenuButton
@@ -12,8 +13,25 @@ func _ready() -> void:
 	restart_button.pressed.connect(_on_restart_pressed)
 	main_menu_button.pressed.connect(_on_main_menu_pressed)
 	
+	# Connect to language change events
+	if EventBus.instance:
+		EventBus.instance.language_changed.connect(_on_language_changed)
+	
 	# Setup initial animation
 	_setup_initial_animation()
+	
+	# Update UI texts with translations
+	_update_ui_texts()
+
+func _update_ui_texts() -> void:
+	# Update texts with translations
+	title_label.text = TranslationManager.translate("PAUSED")
+	resume_button.text = TranslationManager.translate("RESUME")
+	restart_button.text = TranslationManager.translate("RESTART")
+	main_menu_button.text = TranslationManager.translate("MAIN MENU")
+
+func _on_language_changed(_language: int) -> void:
+	_update_ui_texts()
 
 func _setup_initial_animation() -> void:
 	# Animate menu entrance

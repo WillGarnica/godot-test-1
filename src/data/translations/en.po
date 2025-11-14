@@ -1,0 +1,60 @@
+# English Translation File
+# Language: en
+
+msgid ""
+msgstr ""
+"Language: en\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+# Main Menu
+msgid "AWESOME GAME"
+msgstr "AWESOME GAME"
+
+msgid "PLAY"
+msgstr "PLAY"
+
+msgid "OPTIONS"
+msgstr "OPTIONS"
+
+msgid "CREDITS"
+msgstr "CREDITS"
+
+msgid "PLACE COPYRIGHT TEXT HERE"
+msgstr "PLACE COPYRIGHT TEXT HERE"
+
+# Game UI
+msgid "Score: %d"
+msgstr "Score: %d"
+
+msgid "Final Score: %d"
+msgstr "Final Score: %d"
+
+msgid "Restart"
+msgstr "Restart"
+
+# Pause Menu
+msgid "PAUSED"
+msgstr "PAUSED"
+
+msgid "RESUME"
+msgstr "RESUME"
+
+msgid "RESTART"
+msgstr "RESTART"
+
+msgid "MAIN MENU"
+msgstr "MAIN MENU"
+
+# Options Menu
+msgid "Language:"
+msgstr "Language:"
+
+msgid "English"
+msgstr "English"
+
+msgid "Español"
+msgstr "Spanish"
+
+msgid "BACK"
+msgstr "BACK"
+

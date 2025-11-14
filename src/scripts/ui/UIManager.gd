@@ -14,17 +14,29 @@ func _ready() -> void:
 	# Connect restart button
 	restart_button.pressed.connect(_on_restart_button_pressed)
 	
+	# Connect to language change events
+	if EventBus.instance:
+		EventBus.instance.language_changed.connect(_on_language_changed)
+	
 	# Hide game over panel initially
 	game_over_panel.visible = false
+	
+	# Update UI with current language
+	_update_ui_texts()
+
+func _update_ui_texts() -> void:
+	# Update restart button text
+	restart_button.text = TranslationManager.translate("Restart")
 
 func update_score(new_score: int) -> void:
-	if score_label:
-		score_label.text = "Score: " + str(new_score)
+	score_label.text = TranslationManager.translate("Score: %d") % new_score
 
 func show_game_over(final_score: int) -> void:
-	if game_over_panel and final_score_label:
-		game_over_panel.visible = true
-		final_score_label.text = "Final Score: " + str(final_score)
+	game_over_panel.visible = true
+	final_score_label.text = TranslationManager.translate("Final Score: %d") % final_score
+
+func _on_language_changed(_language: int) -> void:
+	_update_ui_texts()
 
 func hide_game_over() -> void:
 	if game_over_panel:

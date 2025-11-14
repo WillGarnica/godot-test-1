@@ -15,6 +15,14 @@ run/main_scene="res://src/scenes/ui/MainMenu.tscn"
 config/features=PackedStringArray("4.5", "Mobile")
 config/icon="res://src/ui/icons/icon.svg"
 
+[autoload]
+
+TranslationManager="*res://src/scripts/core/TranslationManager.gd"
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://src/data/translations/en.po", "res://src/data/translations/es.po")
+
 [rendering]
 
 renderer/rendering_method="mobile"

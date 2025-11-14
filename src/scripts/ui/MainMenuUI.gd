@@ -37,8 +37,15 @@ func _ready() -> void:
 	trophy_icon.pressed.connect(_on_trophy_pressed)
 	settings_icon.pressed.connect(_on_settings_pressed)
 	
+	# Connect to language change events
+	if EventBus.instance:
+		EventBus.instance.language_changed.connect(_on_language_changed)
+	
 	# Setup initial animations
 	_setup_initial_animations()
+	
+	# Update UI texts with translations
+	_update_ui_texts()
 	
 	# Connect to game events
 	# Note: Using static functions instead of direct signal connection
@@ -47,7 +54,7 @@ func _ready() -> void:
 func _initialize_commands() -> void:
 	# Initialize all button commands
 	play_command = PlayCommand.new(get_tree())
-	options_command = OptionsCommand.new()
+	options_command = OptionsCommand.new(get_tree())
 	credits_command = CreditsCommand.new()
 	shop_command = ShopCommand.new()
 	achievements_command = AchievementsCommand.new()
@@ -138,6 +145,16 @@ func _play_button_animation(button: Button) -> void:
 func _on_game_restarted() -> void:
 	# Reset menu state when game is restarted
 	_setup_initial_animations()
+
+func _update_ui_texts() -> void:
+	# Update button texts with translations
+	play_button.text = TranslationManager.translate("PLAY")
+	options_button.text = TranslationManager.translate("OPTIONS")
+	credits_button.text = TranslationManager.translate("CREDITS")
+	title_label.text = TranslationManager.translate("AWESOME GAME")
+
+func _on_language_changed(_language: int) -> void:
+	_update_ui_texts()
 
 func _input(event: InputEvent) -> void:
 	# Handle keyboard shortcuts

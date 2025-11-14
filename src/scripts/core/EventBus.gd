@@ -43,6 +43,7 @@ signal ui_game_over_hidden
 signal obstacle_container_ready(container: Node2D)
 signal debug_toggled(enabled: bool)
 signal boundary_visualization_toggled(enabled: bool)
+signal language_changed(language: int)  # TranslationManager.Language enum value
 
 func _ready() -> void:
 	instance = self
@@ -152,3 +153,8 @@ static func emit_player_died() -> void:
 static func emit_player_respawned() -> void:
 	if instance:
 		instance.player_respawned.emit()
+
+# Translation Events
+static func emit_language_changed(language: int) -> void:
+	if instance:
+		instance.language_changed.emit(language)
