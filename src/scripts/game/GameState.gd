@@ -66,6 +66,8 @@ func pause_game() -> void:
 func resume_game() -> void:
 	if current_state == State.PAUSED:
 		change_state(State.PLAYING)
+		game_resumed.emit()
+		EventBus.emit_game_resumed()
 
 func end_game() -> void:
 	change_state(State.GAME_OVER)

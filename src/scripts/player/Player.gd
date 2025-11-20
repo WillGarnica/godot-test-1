@@ -25,8 +25,14 @@ func _ready() -> void:
 	viewport_size = get_viewport().get_visible_rect().size
 	screen_bounds = Vector2(viewport_size.x, viewport_size.y)
 	
+	# Position player at bottom of screen, centered horizontally
+	var margin_bottom = config.margin_bottom if config.has("margin_bottom") else 50.0
+	position.y = viewport_size.y - margin_bottom
+	position.x = viewport_size.x / 2.0  # Center horizontally
+	
 	# Initialize strategy will be set by PlayerFactory
-	print("DEBUG: Player ready with type: %s" % config.name)
+	if GameConfig.DEBUG_LOG_LEVEL >= DebugManager.LogLevel.DEBUG:
+		print("DEBUG: Player ready with type: %s at position: %s" % [config.name, position])
 
 func _physics_process(delta: float) -> void:
 	# Update viewport size in case of window resize
@@ -47,23 +53,24 @@ func _physics_process(delta: float) -> void:
 	EventBus.emit_player_position_changed(position)
 
 func _handle_basic_movement(_delta: float) -> void:
-	# Basic fallback movement
+	# Basic fallback movement - horizontal movement now
 	var movement_velocity = Vector2.ZERO
 	
-	if Input.is_action_pressed("ui_up") or Input.is_action_pressed("ui_accept"):
-		movement_velocity.y = -GameConfig.PLAYER_FLY_SPEED
-	elif Input.is_action_pressed("ui_down"):
-		movement_velocity.y = GameConfig.PLAYER_FLY_SPEED
+	if Input.is_action_pressed("ui_left"):
+		movement_velocity.x = -GameConfig.PLAYER_FLY_SPEED
+	elif Input.is_action_pressed("ui_right"):
+		movement_velocity.x = GameConfig.PLAYER_FLY_SPEED
 	else:
-		movement_velocity.y = 0
+		movement_velocity.x = 0
 	
-	movement_velocity.x = 0
+	movement_velocity.y = 0
 	self.velocity = movement_velocity
 	move_and_slide()
 
 func set_strategy(new_strategy: PlayerStrategy) -> void:
 	strategy = new_strategy
-	print("DEBUG: Player strategy set to: %s" % config.name)
+	if GameConfig.DEBUG_LOG_LEVEL >= DebugManager.LogLevel.DEBUG:
+		print("DEBUG: Player strategy set to: %s" % config.name)
 
 func get_strategy() -> PlayerStrategy:
 	return strategy
@@ -75,27 +82,44 @@ func get_config() -> Dictionary:
 	return config
 
 func enforce_screen_bounds() -> void:
-	# Use strategy's margins if available, otherwise use config
-	var top_limit = config.margin_top
-	var bottom_limit = screen_bounds.y - config.margin_bottom
+	var limits = _get_screen_limits()
 	
-	# Clamp position to screen bounds
-	position.y = clamp(position.y, top_limit, bottom_limit)
+	# Clamp position to screen bounds (horizontal now)
+	position.x = clamp(position.x, limits.left, limits.right)
 	
-	# If we hit a boundary, stop vertical movement
-	if position.y <= top_limit and velocity.y < 0:
-		velocity.y = 0
-	elif position.y >= bottom_limit and velocity.y > 0:
-		velocity.y = 0
+	# If we hit a boundary, stop horizontal movement
+	if position.x <= limits.left and velocity.x < 0:
+		velocity.x = 0
+	elif position.x >= limits.right and velocity.x > 0:
+		velocity.x = 0
+
+func _get_screen_limits() -> Dictionary:
+	# Helper function to get screen limits (DRY principle)
+	var left_limit = config.margin_left if config.has("margin_left") else GameConfig.PLAYER_MARGIN_LEFT
+	var right_limit = screen_bounds.x - (config.margin_right if config.has("margin_right") else GameConfig.PLAYER_MARGIN_RIGHT)
+	return {"left": left_limit, "right": right_limit}
 
 func get_screen_bounds() -> Vector2:
-	return Vector2(config.margin_top, screen_bounds.y - config.margin_bottom)
+	var limits = _get_screen_limits()
+	return Vector2(limits.left, limits.right)
 
+func is_at_left_boundary() -> bool:
+	# Renamed from is_at_top_boundary - checks left boundary
+	var limits = _get_screen_limits()
+	return position.x <= limits.left
+
+func is_at_right_boundary() -> bool:
+	# Renamed from is_at_bottom_boundary - checks right boundary
+	var limits = _get_screen_limits()
+	return position.x >= limits.right
+
+# Deprecated: Use is_at_left_boundary() instead
 func is_at_top_boundary() -> bool:
-	return position.y <= config.margin_top
+	return is_at_left_boundary()
 
+# Deprecated: Use is_at_right_boundary() instead
 func is_at_bottom_boundary() -> bool:
-	return position.y >= screen_bounds.y - config.margin_bottom
+	return is_at_right_boundary()
 
 func get_health() -> int:
 	if strategy:

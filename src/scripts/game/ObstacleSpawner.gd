@@ -7,7 +7,7 @@ signal obstacle_spawned(obstacle: Area2D)
 @export var spawn_timer_min: float = GameConfig.OBSTACLE_SPAWN_TIMER_MIN
 @export var spawn_timer_max: float = GameConfig.OBSTACLE_SPAWN_TIMER_MAX
 @export var obstacle_speed: float = GameConfig.OBSTACLE_BASE_SPEED
-@export var spawn_height_range: Vector2 = Vector2(GameConfig.OBSTACLE_SPAWN_HEIGHT_MIN, GameConfig.OBSTACLE_SPAWN_HEIGHT_MAX)
+@export var spawn_width_range: Vector2 = Vector2(GameConfig.OBSTACLE_SPAWN_WIDTH_MIN, GameConfig.OBSTACLE_SPAWN_WIDTH_MAX)
 
 var spawn_timer: float = 0.0
 var next_spawn_time: float = 0.0
@@ -45,7 +45,7 @@ func spawn_obstacle() -> void:
 	
 	# Create new obstacle using the factory
 	var viewport_size = get_viewport().get_visible_rect().size
-	var spawn_position = GameConfig.get_obstacle_spawn_position(viewport_size, spawn_height_range)
+	var spawn_position = GameConfig.get_obstacle_spawn_position(viewport_size, spawn_width_range)
 	
 	# Use factory to create random obstacle
 	var obstacle = ObstacleFactory.create_random_obstacle(spawn_position, obstacle_container)

@@ -8,7 +8,8 @@ extends Control
 @onready var shop_icon: Button = $RightIcons/ShopIcon
 @onready var trophy_icon: Button = $RightIcons/TrophyIcon
 @onready var settings_icon: Button = $RightIcons/SettingsIcon
-@onready var title_label: Label = $MainContainer/TitleContainer/TitleLabel
+@onready var awesome_label: Label = $MainContainer/TitleContainer/AwesomeLabel
+@onready var game_label: Label = $MainContainer/TitleContainer/GameLabel
 
 var button_tween: Tween
 var title_tween: Tween
@@ -62,12 +63,16 @@ func _initialize_commands() -> void:
 
 func _setup_initial_animations() -> void:
 	# Animate title entrance
-	title_label.modulate.a = 0.0
-	title_label.scale = Vector2(settings.title_initial_scale, settings.title_initial_scale)
+	awesome_label.modulate.a = 0.0
+	awesome_label.scale = Vector2(settings.title_initial_scale, settings.title_initial_scale)
+	game_label.modulate.a = 0.0
+	game_label.scale = Vector2(settings.title_initial_scale, settings.title_initial_scale)
 	
 	title_tween = create_tween()
-	title_tween.tween_property(title_label, "modulate:a", 1.0, settings.title_animation_duration)
-	title_tween.parallel().tween_property(title_label, "scale", Vector2(1.0, 1.0), settings.title_animation_duration)
+	title_tween.tween_property(awesome_label, "modulate:a", 1.0, settings.title_animation_duration)
+	title_tween.parallel().tween_property(awesome_label, "scale", Vector2(1.0, 1.0), settings.title_animation_duration)
+	title_tween.parallel().tween_property(game_label, "modulate:a", 1.0, settings.title_animation_duration)
+	title_tween.parallel().tween_property(game_label, "scale", Vector2(1.0, 1.0), settings.title_animation_duration)
 	title_tween.tween_callback(_animate_buttons)
 	
 	# Setup button hover effects
@@ -151,7 +156,9 @@ func _update_ui_texts() -> void:
 	play_button.text = TranslationManager.translate("PLAY")
 	options_button.text = TranslationManager.translate("OPTIONS")
 	credits_button.text = TranslationManager.translate("CREDITS")
-	title_label.text = TranslationManager.translate("AWESOME GAME")
+	# Update title labels separately
+	awesome_label.text = TranslationManager.translate("AWESOME")
+	game_label.text = TranslationManager.translate("GAME")
 
 func _on_language_changed(_language: int) -> void:
 	_update_ui_texts()

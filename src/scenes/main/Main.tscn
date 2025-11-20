@@ -36,7 +36,7 @@ offset_top = 400.0
 color = Color(0.2, 0.5, 0.2, 1)
 
 [node name="Player" parent="." instance=ExtResource("1")]
-position = Vector2(100, 300)
+position = Vector2(0, 0)
 
 [node name="ObstacleContainer" type="Node2D" parent="."]
 groups = ["obstacle_container"]
@@ -52,7 +52,7 @@ script = ExtResource("6")
 spawn_timer_min = 1.0
 spawn_timer_max = 3.0
 obstacle_speed = 200.0
-spawn_height_range = Vector2(100, 400)
+spawn_height_range = Vector2(100, 1052)
 
 [node name="ScoreManager" type="Node" parent="GameManager"]
 script = ExtResource("7")

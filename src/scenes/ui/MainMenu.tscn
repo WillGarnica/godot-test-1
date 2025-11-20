@@ -1,8 +1,44 @@
-[gd_scene load_steps=4 format=3 uid="uid://bqx8v7k2n8x1y"]
+[gd_scene load_steps=7 format=3 uid="uid://bqx8v7k2n8x1y"]
 
 [ext_resource type="Script" path="res://src/scripts/ui/MainMenuUI.gd" id="1_8x9k2"]
 [ext_resource type="Theme" path="res://src/ui/themes/MenuTheme.tres" id="2_3h4j5"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/AnimatedBackground.tscn" id="3_6k7l8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_IconButtonNormal"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_IconButtonHover"]
+bg_color = Color(1, 0.8, 0.8, 0.2)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_IconButtonPressed"]
+bg_color = Color(1, 0.6, 0.6, 0.3)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -34,12 +70,25 @@ offset_bottom = 150.0
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="TitleLabel" type="Label" parent="MainContainer/TitleContainer"]
+[node name="AwesomeLabel" type="Label" parent="MainContainer/TitleContainer"]
 layout_mode = 2
-text = "AWESOME
-GAME"
+text = "AWESOME"
 horizontal_alignment = 1
 vertical_alignment = 1
+theme_override_font_sizes/font_size = 38
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 0.85, 0.5, 1)
+theme_override_constants/outline_size = 5
+
+[node name="GameLabel" type="Label" parent="MainContainer/TitleContainer"]
+layout_mode = 2
+text = "GAME"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 72
+theme_override_colors/font_color = Color(1, 0.82, 0.4, 1)
+theme_override_colors/font_outline_color = Color(0.35, 0.22, 0.13, 1)
+theme_override_constants/outline_size = 10
 
 [node name="Spacer1" type="Control" parent="MainContainer"]
 layout_mode = 2
@@ -52,17 +101,17 @@ size_flags_horizontal = 4
 [node name="PlayButton" type="Button" parent="MainContainer/ButtonContainer"]
 layout_mode = 2
 text = "PLAY"
-flat = true
+custom_minimum_size = Vector2(320, 80)
 
 [node name="OptionsButton" type="Button" parent="MainContainer/ButtonContainer"]
 layout_mode = 2
 text = "OPTIONS"
-flat = true
+custom_minimum_size = Vector2(320, 80)
 
 [node name="CreditsButton" type="Button" parent="MainContainer/ButtonContainer"]
 layout_mode = 2
 text = "CREDITS"
-flat = true
+custom_minimum_size = Vector2(320, 80)
 
 [node name="RightIcons" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -79,17 +128,23 @@ offset_bottom = 100.0
 [node name="ShopIcon" type="Button" parent="RightIcons"]
 layout_mode = 2
 text = "🛒"
-flat = true
+theme_override_styles/normal = SubResource("StyleBoxFlat_IconButtonNormal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_IconButtonHover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_IconButtonPressed")
 
 [node name="TrophyIcon" type="Button" parent="RightIcons"]
 layout_mode = 2
 text = "🏆"
-flat = true
+theme_override_styles/normal = SubResource("StyleBoxFlat_IconButtonNormal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_IconButtonHover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_IconButtonPressed")
 
 [node name="SettingsIcon" type="Button" parent="RightIcons"]
 layout_mode = 2
 text = "⚙️"
-flat = true
+theme_override_styles/normal = SubResource("StyleBoxFlat_IconButtonNormal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_IconButtonHover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_IconButtonPressed")
 
 [node name="CopyrightLabel" type="Label" parent="."]
 layout_mode = 1

@@ -8,13 +8,13 @@ var _type: PlayerType.Type
 var _position: Vector2
 var _parent: Node
 
-# Import player strategies
-const RunnerStrategy = preload("res://src/scripts/player/strategies/RunnerStrategy.gd")
-const FlyerStrategy = preload("res://src/scripts/player/strategies/FlyerStrategy.gd")
-const TankStrategy = preload("res://src/scripts/player/strategies/TankStrategy.gd")
-const NinjaStrategy = preload("res://src/scripts/player/strategies/NinjaStrategy.gd")
-const MageStrategy = preload("res://src/scripts/player/strategies/MageStrategy.gd")
-const SpeedsterStrategy = preload("res://src/scripts/player/strategies/SpeedsterStrategy.gd")
+# Import player strategies (using different names to avoid shadowing global classes)
+const RunnerStrategyClass = preload("res://src/scripts/player/strategies/RunnerStrategy.gd")
+const FlyerStrategyClass = preload("res://src/scripts/player/strategies/FlyerStrategy.gd")
+const TankStrategyClass = preload("res://src/scripts/player/strategies/TankStrategy.gd")
+const NinjaStrategyClass = preload("res://src/scripts/player/strategies/NinjaStrategy.gd")
+const MageStrategyClass = preload("res://src/scripts/player/strategies/MageStrategy.gd")
+const SpeedsterStrategyClass = preload("res://src/scripts/player/strategies/SpeedsterStrategy.gd")
 
 func _init() -> void:
 	# Initialize with default values
@@ -68,24 +68,25 @@ func _initialize_player_strategy(player: CharacterBody2D, type: PlayerType.Type)
 	var strategy: PlayerStrategy
 	match type:
 		PlayerType.Type.RUNNER:
-			strategy = RunnerStrategy.new(config, player)
+			strategy = RunnerStrategyClass.new(config, player)
 		PlayerType.Type.FLYER:
-			strategy = FlyerStrategy.new(config, player)
+			strategy = FlyerStrategyClass.new(config, player)
 		PlayerType.Type.TANK:
-			strategy = TankStrategy.new(config, player)
+			strategy = TankStrategyClass.new(config, player)
 		PlayerType.Type.NINJA:
-			strategy = NinjaStrategy.new(config, player)
+			strategy = NinjaStrategyClass.new(config, player)
 		PlayerType.Type.MAGE:
-			strategy = MageStrategy.new(config, player)
+			strategy = MageStrategyClass.new(config, player)
 		PlayerType.Type.SPEEDSTER:
-			strategy = SpeedsterStrategy.new(config, player)
+			strategy = SpeedsterStrategyClass.new(config, player)
 		_:
-			strategy = RunnerStrategy.new(config, player)
+			strategy = RunnerStrategyClass.new(config, player)
 	
 	# Set the strategy on the player
 	player.set_strategy(strategy)
 	
-	print("DEBUG: Player created with type: %s" % PlayerType.Type.keys()[type])
+	if GameConfig.DEBUG_LOG_LEVEL >= DebugManager.LogLevel.DEBUG:
+		print("DEBUG: Player created with type: %s" % PlayerType.Type.keys()[type])
 
 ## Create a random player
 func create_random() -> PlayerBuilder:

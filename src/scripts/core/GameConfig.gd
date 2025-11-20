@@ -13,15 +13,15 @@ const OBSTACLE_SPAWN_OFFSET = 50.0
 const OBSTACLE_DESTROY_OFFSET = -100.0
 
 # Player Settings
-const PLAYER_START_POSITION = Vector2(100, 300)
+const PLAYER_START_POSITION = Vector2(576, 548)  # Center X, near bottom (648 - 100)
 const PLAYER_FLY_SPEED = 300.0
-const PLAYER_MARGIN_TOP = 50.0
-const PLAYER_MARGIN_BOTTOM = 50.0
+const PLAYER_MARGIN_LEFT = 50.0
+const PLAYER_MARGIN_RIGHT = 50.0
 
 # Obstacle Settings
 const OBSTACLE_BASE_SPEED = 200.0
-const OBSTACLE_SPAWN_HEIGHT_MIN = 100.0
-const OBSTACLE_SPAWN_HEIGHT_MAX = 400.0
+const OBSTACLE_SPAWN_WIDTH_MIN = 100.0  # Spawn from left side
+const OBSTACLE_SPAWN_WIDTH_MAX = 1052.0  # Spawn from right side (1152 - 100)
 const OBSTACLE_SPAWN_TIMER_MIN = 1.0
 const OBSTACLE_SPAWN_TIMER_MAX = 3.0
 
@@ -64,9 +64,10 @@ const DEBUG_OBSTACLE_MOVEMENT_INTERVAL = 30  # frames
 static func get_difficulty_settings(difficulty: String) -> Dictionary:
 	return DIFFICULTY_SETTINGS.get(difficulty, DIFFICULTY_SETTINGS["easy"])
 
-static func get_obstacle_spawn_position(viewport_size: Vector2, height_range: Vector2) -> Vector2:
-	var spawn_y = randf_range(height_range.x, height_range.y)
-	return Vector2(viewport_size.x + OBSTACLE_SPAWN_OFFSET, spawn_y)
+static func get_obstacle_spawn_position(viewport_size: Vector2, width_range: Vector2) -> Vector2:
+	var spawn_x = randf_range(width_range.x, width_range.y)
+	return Vector2(spawn_x, -OBSTACLE_SPAWN_OFFSET)  # Spawn above screen
 
-static func is_obstacle_off_screen(position: Vector2) -> bool:
-	return position.x < OBSTACLE_DESTROY_OFFSET
+static func is_obstacle_off_screen(position: Vector2, viewport_size: Vector2 = Vector2(1152, 648)) -> bool:
+	# Destroy when below screen (obstacles fall from top to bottom)
+	return position.y > viewport_size.y + abs(OBSTACLE_DESTROY_OFFSET)

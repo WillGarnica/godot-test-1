@@ -32,16 +32,16 @@ func _apply_base_movement(_delta: float) -> void:
 	# Default implementation - can be overridden
 	var velocity = Vector2.ZERO
 	
-	# Handle vertical movement
-	if Input.is_action_pressed("ui_up") or Input.is_action_pressed("ui_accept"):
-		velocity.y = -config.fly_speed
-	elif Input.is_action_pressed("ui_down"):
-		velocity.y = config.fly_speed
+	# Handle horizontal movement (left/right)
+	if Input.is_action_pressed("ui_left"):
+		velocity.x = -config.fly_speed
+	elif Input.is_action_pressed("ui_right"):
+		velocity.x = config.fly_speed
 	else:
-		velocity.y = 0
+		velocity.x = 0
 	
-	# No horizontal movement - obstacles move towards player
-	velocity.x = 0
+	# No vertical movement - player stays at bottom, obstacles fall from top
+	velocity.y = 0
 	
 	# Apply movement
 	player.velocity = velocity
@@ -83,10 +83,12 @@ func _trigger_dodge() -> void:
 
 ## Trigger teleport ability
 func _trigger_teleport() -> void:
-	# Teleport to a random safe position
+	# Teleport to a random safe horizontal position
 	var viewport_size = player.get_viewport().get_visible_rect().size
-	var safe_y = randf_range(config.margin_top, viewport_size.y - config.margin_bottom)
-	player.position.y = safe_y
+	var margin_left = config.margin_left if config.has("margin_left") else GameConfig.PLAYER_MARGIN_LEFT
+	var margin_right = config.margin_right if config.has("margin_right") else GameConfig.PLAYER_MARGIN_RIGHT
+	var safe_x = randf_range(margin_left, viewport_size.x - margin_right)
+	player.position.x = safe_x
 
 ## Check if player can dodge an obstacle
 func can_dodge_obstacle(obstacle: Area2D) -> bool:

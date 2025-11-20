@@ -28,7 +28,8 @@ func _ready() -> void:
 	# Connect the body_entered signal to detect collision with player
 	body_entered.connect(_on_body_entered)
 	
-	print("DEBUG: Obstacle created: %s" % ObstacleType.Type.keys()[obstacle_type])
+	if GameConfig.DEBUG_LOG_LEVEL >= DebugManager.LogLevel.DEBUG:
+		print("DEBUG: Obstacle created: %s" % ObstacleType.Type.keys()[obstacle_type])
 
 func _setup_obstacle() -> void:
 	# Set points value
@@ -76,18 +77,21 @@ func _physics_process(delta: float) -> void:
 	# Apply movement based on type
 	_apply_movement(delta)
 	
-	# Move obstacle from right to left (base movement)
-	position.x -= base_speed * delta
+	# Move obstacle from top to bottom (base movement)
+	position.y += base_speed * delta
 	
 	# Debug logging at configured interval (only when debug is enabled)
-	if int(time_elapsed * 60) % GameConfig.DEBUG_OBSTACLE_MOVEMENT_INTERVAL == 0:
-		print("DEBUG: Obstacle %s at position: %s, speed: %s" % [
-			ObstacleType.Type.keys()[obstacle_type], position, base_speed
-		])
+	if GameConfig.DEBUG_LOG_LEVEL >= DebugManager.LogLevel.DEBUG:
+		if int(time_elapsed * 60) % GameConfig.DEBUG_OBSTACLE_MOVEMENT_INTERVAL == 0:
+			print("DEBUG: Obstacle %s at position: %s, speed: %s" % [
+				ObstacleType.Type.keys()[obstacle_type], position, base_speed
+			])
 	
-	# Destroy obstacle when it goes off-screen
-	if GameConfig.is_obstacle_off_screen(position):
-		print("DEBUG: Obstacle destroyed at position: %s" % position)
+	# Destroy obstacle when it goes off-screen (below the screen)
+	var viewport_size = get_viewport().get_visible_rect().size
+	if GameConfig.is_obstacle_off_screen(position, viewport_size):
+		if GameConfig.DEBUG_LOG_LEVEL >= DebugManager.LogLevel.DEBUG:
+			print("DEBUG: Obstacle destroyed at position: %s" % position)
 		queue_free()
 
 func _apply_movement(delta: float) -> void:
@@ -96,27 +100,26 @@ func _apply_movement(delta: float) -> void:
 			# No additional movement
 			pass
 		"vertical_bounce":
-			# Bounce up and down
-			movement_offset.y = sin(time_elapsed * 3.0) * 30.0
-			position.y = initial_position.y + movement_offset.y
+			# Bounce left and right (horizontal bounce while falling)
+			movement_offset.x = sin(time_elapsed * 3.0) * 30.0
+			position.x = initial_position.x + movement_offset.x
 		"bounce":
 			# Bounce in all directions
 			movement_offset.x = sin(time_elapsed * 2.0) * 20.0
 			movement_offset.y = cos(time_elapsed * 2.0) * 20.0
 			position += movement_offset * delta
 		"falling":
-			# Fall down with gravity
-			movement_offset.y += config.speed * delta
-			position.y = initial_position.y + movement_offset.y
+			# Already falling down, no additional movement needed
+			pass
 		"rotating":
 			# Rotate around its center
 			rotation += delta * 3.0
 		"sine_wave":
-			# Move in a sine wave pattern
-			movement_offset.y = sin(time_elapsed * 2.0) * 40.0
-			position.y = initial_position.y + movement_offset.y
+			# Move in a sine wave pattern horizontally while falling
+			movement_offset.x = sin(time_elapsed * 2.0) * 40.0
+			position.x = initial_position.x + movement_offset.x
 		"horizontal_slide":
-			# Slide horizontally
+			# Slide horizontally while falling
 			movement_offset.x = sin(time_elapsed * 1.5) * 50.0
 			position.x = initial_position.x + movement_offset.x
 

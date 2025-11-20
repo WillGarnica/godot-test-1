@@ -30,6 +30,8 @@ static func get_config(type: Type) -> Dictionary:
 				"size": Vector2(32, 32),
 				"margin_top": 50.0,
 				"margin_bottom": 50.0,
+				"margin_left": 50.0,
+				"margin_right": 50.0,
 				"score_multiplier": 1.0
 			}
 		Type.FLYER:
@@ -46,6 +48,8 @@ static func get_config(type: Type) -> Dictionary:
 				"size": Vector2(28, 28),
 				"margin_top": 30.0,
 				"margin_bottom": 30.0,
+				"margin_left": 30.0,
+				"margin_right": 30.0,
 				"score_multiplier": 1.2
 			}
 		Type.TANK:
@@ -62,6 +66,8 @@ static func get_config(type: Type) -> Dictionary:
 				"size": Vector2(40, 40),
 				"margin_top": 60.0,
 				"margin_bottom": 60.0,
+				"margin_left": 60.0,
+				"margin_right": 60.0,
 				"score_multiplier": 0.8
 			}
 		Type.NINJA:
@@ -78,6 +84,8 @@ static func get_config(type: Type) -> Dictionary:
 				"size": Vector2(30, 30),
 				"margin_top": 40.0,
 				"margin_bottom": 40.0,
+				"margin_left": 40.0,
+				"margin_right": 40.0,
 				"score_multiplier": 1.1
 			}
 		Type.MAGE:
@@ -94,6 +102,8 @@ static func get_config(type: Type) -> Dictionary:
 				"size": Vector2(32, 32),
 				"margin_top": 50.0,
 				"margin_bottom": 50.0,
+				"margin_left": 50.0,
+				"margin_right": 50.0,
 				"score_multiplier": 1.3
 			}
 		Type.SPEEDSTER:
@@ -110,6 +120,8 @@ static func get_config(type: Type) -> Dictionary:
 				"size": Vector2(24, 24),
 				"margin_top": 35.0,
 				"margin_bottom": 35.0,
+				"margin_left": 35.0,
+				"margin_right": 35.0,
 				"score_multiplier": 1.5
 			}
 		_:
